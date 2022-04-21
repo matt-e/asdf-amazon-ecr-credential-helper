@@ -3,9 +3,11 @@
 set -euo pipefail
 
 # TODO: Ensure this is the correct GitHub homepage where releases can be downloaded for amazon-ecr-credential-helper.
-GH_REPO="https://github.com/matt-e/asdf-amazon-ecr-credential-helper"
+GH_REPO="https://github.com/awslabs/amazon-ecr-credential-helper"
 TOOL_NAME="amazon-ecr-credential-helper"
-TOOL_TEST="docker-credential-ecr-login -v"
+BIN_NAME="docker-credential-ecr-login"
+TOOL_TEST="${BIN_NAME} -v"
+BUCKET="https://amazon-ecr-credential-helper-releases.s3.us-east-2.amazonaws.com"
 
 fail() {
   echo -e "asdf-$TOOL_NAME: $*"
@@ -27,22 +29,28 @@ sort_versions() {
 list_github_tags() {
   git ls-remote --tags --refs "$GH_REPO" |
     grep -o 'refs/tags/.*' | cut -d/ -f3- |
-    sed 's/^v//' # NOTE: You might want to adapt this sed to remove non-version strings from tags
+    sed 's/^v//' |
+    grep -v '/'
 }
 
 list_all_versions() {
-  # TODO: Adapt this. By default we simply list the tag names from GitHub releases.
-  # Change this function if amazon-ecr-credential-helper has other means of determining installable versions.
   list_github_tags
 }
 
 download_release() {
-  local version filename url
+  local version filename url platform arch
   version="$1"
   filename="$2"
 
+  platform="$(uname | tr '[:upper:]' '[:lower:]')"
+
+  arch="$(uname -m)"
+  if [[ "$arch" == "x86_64" ]]; then
+    arch="amd64"
+  fi
+
   # TODO: Adapt the release URL convention for amazon-ecr-credential-helper
-  url="$GH_REPO/archive/v${version}.tar.gz"
+  url="${BUCKET}/${version}/${platform}-${arch}/${BIN_NAME}"
 
   echo "* Downloading $TOOL_NAME release $version..."
   curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"

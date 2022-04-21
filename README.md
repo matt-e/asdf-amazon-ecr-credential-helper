@@ -3,7 +3,7 @@
 # asdf-amazon-ecr-credential-helper [![Build](https://github.com/matt-e/asdf-amazon-ecr-credential-helper/actions/workflows/build.yml/badge.svg)](https://github.com/matt-e/asdf-amazon-ecr-credential-helper/actions/workflows/build.yml) [![Lint](https://github.com/matt-e/asdf-amazon-ecr-credential-helper/actions/workflows/lint.yml/badge.svg)](https://github.com/matt-e/asdf-amazon-ecr-credential-helper/actions/workflows/lint.yml)
 
 
-[amazon-ecr-credential-helper](https://github.com/matt-e/asdf-amazon-ecr-credential-helper) plugin for the [asdf version manager](https://asdf-vm.com).
+[amazon-ecr-credential-helper](https://github.com/awslabs/amazon-ecr-credential-helper) plugin for the [asdf version manager](https://asdf-vm.com).
 
 </div>
 
@@ -18,7 +18,6 @@
 # Dependencies
 
 - `bash`, `curl`, `tar`: generic POSIX utilities.
-- `SOME_ENV_VAR`: set this environment variable in your shell config to load the correct version of tool x.
 
 # Install
 
